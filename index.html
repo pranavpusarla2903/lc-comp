@@ -227,6 +227,14 @@
             align-items: center;
         }
 
+        .total-leaderboard-item {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px 100px 100px 100px 100px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            align-items: center;
+        }
+
         .leaderboard-item:nth-child(even) {
             background: #f8f9fa;
         }
@@ -252,6 +260,12 @@
         .points {
             font-weight: 700;
             color: #27ae60;
+        }
+
+        .weeks-active {
+            font-weight: 600;
+            color: #8e44ad;
+            text-align: center;
         }
 
         .history-section {
@@ -415,6 +429,27 @@
                     </div>
                     <div id="leaderboardBody">
                         <div class="no-data">No data for this week yet</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Leaderboard -->
+            <div class="section">
+                <h2>🏆 Total Competition Leaderboard</h2>
+                <div class="leaderboard" id="totalLeaderboard">
+                    <div class="leaderboard-header">
+                        <div class="leaderboard-item">
+                            <div>Rank</div>
+                            <div>Name</div>
+                            <div>Total Easy</div>
+                            <div>Total Medium</div>
+                            <div>Total Hard</div>
+                            <div>Total Points</div>
+                            <div>Weeks Active</div>
+                        </div>
+                    </div>
+                    <div id="totalLeaderboardBody">
+                        <div class="no-data">No competition data yet</div>
                     </div>
                 </div>
             </div>
@@ -738,6 +773,7 @@
         function updateDisplay() {
             updateStats();
             updateWeekSelector();
+            updateTotalLeaderboard();
         }
 
         function saveData() {
@@ -828,6 +864,63 @@
                 // Update stats and leaderboard
                 updateStats();
             }
+        }
+
+        function updateTotalLeaderboard() {
+            const totalLeaderboardBody = document.getElementById('totalLeaderboardBody');
+            
+            if (Object.keys(weeklyData).length === 0) {
+                totalLeaderboardBody.innerHTML = '<div class="no-data">No competition data yet</div>';
+                return;
+            }
+
+            // Calculate total stats for each participant across all weeks
+            const totalStats = {};
+            
+            // Initialize totals for all participants
+            participants.forEach(participant => {
+                totalStats[participant.id] = {
+                    id: participant.id,
+                    name: participant.name,
+                    totalEasy: 0,
+                    totalMedium: 0,
+                    totalHard: 0,
+                    totalPoints: 0,
+                    weeksActive: 0
+                };
+            });
+
+            // Sum up all weeks
+            Object.values(weeklyData).forEach(weekData => {
+                weekData.participants.forEach(participant => {
+                    if (totalStats[participant.id]) {
+                        totalStats[participant.id].totalEasy += participant.easy || 0;
+                        totalStats[participant.id].totalMedium += participant.medium || 0;
+                        totalStats[participant.id].totalHard += participant.hard || 0;
+                        totalStats[participant.id].totalPoints += participant.points || 0;
+                        totalStats[participant.id].weeksActive += 1;
+                    }
+                });
+            });
+
+            // Convert to array and sort by total points
+            const sortedTotalStats = Object.values(totalStats).sort((a, b) => b.totalPoints - a.totalPoints);
+
+            // Display the total leaderboard
+            totalLeaderboardBody.innerHTML = sortedTotalStats.map((participant, index) => {
+                const rankClass = index < 3 ? `rank-${index + 1}` : '';
+                return `
+                    <div class="total-leaderboard-item">
+                        <div class="rank ${rankClass}">${index + 1}</div>
+                        <div class="participant-name">${participant.name}</div>
+                        <div class="easy">${participant.totalEasy}</div>
+                        <div class="medium">${participant.totalMedium}</div>
+                        <div class="hard">${participant.totalHard}</div>
+                        <div class="points">${participant.totalPoints}</div>
+                        <div class="weeks-active">${participant.weeksActive}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function exportData() {
