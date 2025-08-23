@@ -229,7 +229,7 @@
 
         .total-leaderboard-item {
             display: grid;
-            grid-template-columns: 50px 1fr 100px 100px 100px 100px 100px;
+            grid-template-columns: 50px 1fr 100px 100px 100px 100px;
             padding: 15px 20px;
             border-bottom: 1px solid #e9ecef;
             align-items: center;
@@ -445,7 +445,6 @@
                             <div>Total Medium</div>
                             <div>Total Hard</div>
                             <div>Total Points</div>
-                            <div>Weeks Active</div>
                         </div>
                     </div>
                     <div id="totalLeaderboardBody">
@@ -868,16 +867,8 @@
 
         function updateTotalLeaderboard() {
             const totalLeaderboardBody = document.getElementById('totalLeaderboardBody');
-            
-            if (Object.keys(weeklyData).length === 0) {
-                totalLeaderboardBody.innerHTML = '<div class="no-data">No competition data yet</div>';
-                return;
-            }
-
-            // Calculate total stats for each participant across all weeks
             const totalStats = {};
-            
-            // Initialize totals for all participants
+
             participants.forEach(participant => {
                 totalStats[participant.id] = {
                     id: participant.id,
@@ -885,8 +876,7 @@
                     totalEasy: 0,
                     totalMedium: 0,
                     totalHard: 0,
-                    totalPoints: 0,
-                    weeksActive: 0
+                    totalPoints: 0
                 };
             });
 
@@ -898,7 +888,6 @@
                         totalStats[participant.id].totalMedium += participant.medium || 0;
                         totalStats[participant.id].totalHard += participant.hard || 0;
                         totalStats[participant.id].totalPoints += participant.points || 0;
-                        totalStats[participant.id].weeksActive += 1;
                     }
                 });
             });
@@ -917,7 +906,6 @@
                         <div class="medium">${participant.totalMedium}</div>
                         <div class="hard">${participant.totalHard}</div>
                         <div class="points">${participant.totalPoints}</div>
-                        <div class="weeks-active">${participant.weeksActive}</div>
                     </div>
                 `;
             }).join('');
