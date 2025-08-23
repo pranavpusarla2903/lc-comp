@@ -116,7 +116,7 @@ lc-comp/
 ```
 
 ## Getting Started
-Simply open `src/index.html` in your web browser to start using the competition tracker!
+Simply open `github.com/username/lc-comp` in your web browser to start using the competition tracker!
 
 ---
 
