@@ -282,6 +282,30 @@
             padding: 40px;
         }
 
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         .total-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -416,9 +440,10 @@
         let weeklyData = {};
         let currentWeek = getCurrentWeek();
 
-        // Load data from localStorage on page load
+        // Load data from localStorage and JSON file on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadData();
+            loadFromJsonFile();
             initializeForm();
             updateDisplay();
         });
@@ -726,15 +751,59 @@
             }
         }
 
+        async function loadFromJsonFile() {
+            try {
+                const response = await fetch('leetcode-competition-data.json');
+                if (response.ok) {
+                    const jsonData = await response.json();
+                    
+                    // Validate the JSON structure
+                    if (jsonData.participants && jsonData.weeklyData) {
+                        // Only load if we don't have local data or if JSON data is newer
+                        const localLastUpdated = localStorage.getItem('leetcodeCompetition_lastUpdated');
+                        const jsonLastUpdated = jsonData.lastUpdated;
+                        
+                        if (!localLastUpdated || new Date(jsonLastUpdated) > new Date(localLastUpdated)) {
+                            participants = jsonData.participants;
+                            weeklyData = jsonData.weeklyData;
+                            
+                            // Save to localStorage
+                            saveData();
+                            localStorage.setItem('leetcodeCompetition_lastUpdated', jsonLastUpdated);
+                            
+                            console.log('Data loaded from leetcode-competition-data.json');
+                            showNotification('📥 Data loaded from GitHub!');
+                        }
+                    }
+                }
+            } catch (error) {
+                // File doesn't exist or can't be loaded - this is normal
+                console.log('No leetcode-competition-data.json file found or error loading it');
+            }
+        }
+
         function clearData() {
             if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
                 participants = [];
                 weeklyData = {};
                 localStorage.removeItem('leetcodeCompetition_participants');
                 localStorage.removeItem('leetcodeCompetition_weeklyData');
+                localStorage.removeItem('leetcodeCompetition_lastUpdated');
                 initializeForm();
                 updateDisplay();
             }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
         }
 
         function exportData() {
