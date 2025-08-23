@@ -746,6 +746,7 @@
         }
 
         function loadData() {
+            console.log(`Loading data from localStorage...${localStorage}`);
             const savedParticipants = localStorage.getItem('leetcodeCompetition_participants');
             const savedWeeklyData = localStorage.getItem('leetcodeCompetition_weeklyData');
             
@@ -758,7 +759,7 @@
             }
         }
 
-                async function loadFromJsonFile() {
+        async function loadFromJsonFile() {
             try {
                 const response = await fetch('leetcode-competition-data.json');
                 if (response.ok) {
