@@ -768,25 +768,14 @@
                     console.log("JSON data:", jsonData);
                     
                     // Validate the JSON structure
-                    if (jsonData.participants) {
-                        // Only load if we don't have local data or if JSON data is newer
-                        const localLastUpdated = localStorage.getItem('leetcodeCompetition_lastUpdated');
-                        const jsonLastUpdated = jsonData.lastUpdated;
-                        
-                        if (!localLastUpdated || new Date(jsonLastUpdated) > new Date(localLastUpdated)) {
-                            participants = jsonData.participants;
-                            weeklyData = jsonData.weeklyData;
-                            
-                            // Save to localStorage
-                            saveData();
-                            localStorage.setItem('leetcodeCompetition_lastUpdated', jsonLastUpdated);
-                            
-                            console.log('Data loaded from leetcode-competition-data.json');
-                            showNotification('📥 Data loaded from GitHub!');
-                            
-                            return true; // Indicate that data was loaded
-                        }
-                    }
+                    participants = jsonData.participants;
+                    weeklyData = jsonData.weeklyData;
+                    
+                    // Save to localStorage
+                    saveData();
+                    console.log('Data loaded from leetcode-competition-data.json');
+                    showNotification('📥 Data loaded from GitHub!');
+                    return true; // Indicate that data was loaded   
                 }
             } catch (error) {
                 // File doesn't exist or can't be loaded - this is normal
