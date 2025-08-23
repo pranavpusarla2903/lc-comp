@@ -760,10 +760,12 @@
         }
 
         async function loadFromJsonFile() {
+            console.log("Loading data from JSON file...");
             try {
                 const response = await fetch('leetcode-competition-data.json');
                 if (response.ok) {
                     const jsonData = await response.json();
+                    console.log("JSON data:", jsonData);
                     
                     // Validate the JSON structure
                     if (jsonData.participants) {
