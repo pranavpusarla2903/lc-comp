@@ -493,7 +493,9 @@
             const now = new Date();
             const startOfYear = new Date(now.getFullYear(), 0, 1);
             const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
-            return Math.ceil((days + startOfYear.getDay() + 1) / 7);
+            // Adjust for Monday as first day of week (0=Sunday, 1=Monday, etc.)
+            const mondayAdjustment = startOfYear.getDay() === 0 ? 6 : startOfYear.getDay() - 1;
+            return Math.ceil((days + mondayAdjustment + 1) / 7);
         }
 
         function addParticipant() {
@@ -924,7 +926,7 @@
             
             const link = document.createElement('a');
             link.href = URL.createObjectURL(dataBlob);
-            link.download = `leetcode-competition-data-${new Date().toISOString().split('T')[0]}.json`;
+            link.download = `leetcode-competition-data.json`;
             link.click();
             
             alert('Data exported successfully! Save this file to GitHub to share across browsers.');
