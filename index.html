@@ -84,10 +84,31 @@
             border-color: #3498db;
         }
 
-        .participant-input h3 {
-            color: #2c3e50;
+        .participant-header {
             margin-bottom: 15px;
-            font-size: 1.3rem;
+        }
+
+        .participant-name-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .participant-name-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .participant-name-input::placeholder {
+            color: #95a5a6;
+            font-weight: normal;
         }
 
         .difficulty-inputs {
@@ -426,6 +447,15 @@
             updateDisplay();
         }
 
+        function updateParticipantName(id, newName) {
+            const participant = participants.find(p => p.id === id);
+            if (participant) {
+                participant.name = newName.trim() || `Participant ${participant.id}`;
+                saveData();
+                updateDisplay();
+            }
+        }
+
         function initializeForm() {
             const form = document.getElementById('inputForm');
             form.innerHTML = '';
@@ -434,7 +464,14 @@
                 const participantDiv = document.createElement('div');
                 participantDiv.className = 'participant-input';
                 participantDiv.innerHTML = `
-                    <h3>${participant.name}</h3>
+                    <div class="participant-header">
+                        <input type="text" 
+                               value="${participant.name}" 
+                               class="participant-name-input"
+                               placeholder="Enter participant name"
+                               onchange="updateParticipantName(${participant.id}, this.value)"
+                               onblur="updateParticipantName(${participant.id}, this.value)">
+                    </div>
                     <div class="difficulty-inputs">
                         <div class="difficulty-group">
                             <label class="easy">Easy</label>
