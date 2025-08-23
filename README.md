@@ -110,13 +110,12 @@ The website is built with vanilla HTML, CSS, and JavaScript, making it easy to c
 ## File Structure
 ```
 lc-comp/
-├── src/
-│   └── index.html          # Main website file
+├── index.html             # Main website file
 └── README.md              # This documentation
 ```
 
 ## Getting Started
-Simply open `src/index.html` in your web browser to start using the competition tracker!
+Simply open `github.com/username/lc-comp` in your web browser to start using the competition tracker!
 
 ---
 
