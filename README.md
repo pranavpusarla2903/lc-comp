@@ -110,8 +110,7 @@ The website is built with vanilla HTML, CSS, and JavaScript, making it easy to c
 ## File Structure
 ```
 lc-comp/
-├── src/
-│   └── index.html          # Main website file
+├── index.html             # Main website file
 └── README.md              # This documentation
 ```
 
