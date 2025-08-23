@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Competition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .input-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .participant-input {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: border-color 0.3s ease;
+        }
+
+        .participant-input:focus-within {
+            border-color: #3498db;
+        }
+
+        .participant-input h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .difficulty-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .difficulty-group {
+            text-align: center;
+        }
+
+        .difficulty-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .difficulty-group input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .difficulty-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .easy { color: #27ae60; }
+        .medium { color: #f39c12; }
+        .hard { color: #e74c3c; }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+        }
+
+        .leaderboard-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        .leaderboard-item {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px 100px 100px 100px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            align-items: center;
+        }
+
+        .leaderboard-item:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+
+        .participant-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .points {
+            font-weight: 700;
+            color: #27ae60;
+        }
+
+        .history-section {
+            margin-top: 30px;
+        }
+
+        .week-selector {
+            margin-bottom: 20px;
+        }
+
+        .week-selector select {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+
+        .week-selector select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        .total-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .total-stat {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .total-stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .total-stat-label {
+            color: #6c757d;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .input-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .leaderboard-item {
+                grid-template-columns: 40px 1fr 80px;
+                font-size: 0.9rem;
+            }
+            
+            .difficulty-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 LeetCode Competition</h1>
+            <p>Weekly coding challenges with friends</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Input Section -->
+            <div class="section">
+                <h2>📊 Weekly Input</h2>
+                <div class="input-form" id="inputForm">
+                    <!-- Participant inputs will be generated here -->
+                </div>
+                <div style="text-align: center;">
+                    <button class="btn" onclick="addParticipant()">➕ Add Participant</button>
+                    <button class="btn" onclick="submitWeek()">💾 Submit Week</button>
+                    <button class="btn btn-danger" onclick="clearData()">🗑️ Clear All Data</button>
+                </div>
+                <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef;">
+                    <button class="btn" onclick="exportData()">📤 Export Data</button>
+                    <button class="btn" onclick="importData()">📥 Import Data</button>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
+                </div>
+            </div>
+
+            <!-- Current Week Stats -->
+            <div class="section">
+                <h2>📈 Current Week Stats</h2>
+                <div class="stats-grid" id="currentStats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalProblems">0</div>
+                        <div class="stat-label">Total Problems</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalPoints">0</div>
+                        <div class="stat-label">Total Points</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="participantCount">0</div>
+                        <div class="stat-label">Participants</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgProblems">0</div>
+                        <div class="stat-label">Avg Problems</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Leaderboard -->
+            <div class="section">
+                <h2>🏅 Current Week Leaderboard</h2>
+                <div class="leaderboard" id="currentLeaderboard">
+                    <div class="leaderboard-header">
+                        <div class="leaderboard-item">
+                            <div>Rank</div>
+                            <div>Name</div>
+                            <div>Easy</div>
+                            <div>Medium</div>
+                            <div>Hard</div>
+                            <div>Points</div>
+                        </div>
+                    </div>
+                    <div id="leaderboardBody">
+                        <div class="no-data">No data for this week yet</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historical Data -->
+            <div class="section history-section">
+                <h2>📚 Historical Data</h2>
+                <div class="week-selector">
+                    <select id="weekSelector" onchange="loadHistoricalWeek()">
+                        <option value="">Select a week...</option>
+                    </select>
+                </div>
+                <div id="historicalData">
+                    <div class="no-data">Select a week to view historical data</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize data structure
+        let participants = [];
+        let weeklyData = {};
+        let currentWeek = getCurrentWeek();
+
+        // Load data from localStorage on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            initializeForm();
+            updateDisplay();
+        });
+
+        function getCurrentWeek() {
+            const now = new Date();
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
+            return Math.ceil((days + startOfYear.getDay() + 1) / 7);
+        }
+
+        function addParticipant() {
+            const participantId = Date.now();
+            participants.push({
+                id: participantId,
+                name: `Participant ${participants.length + 1}`
+            });
+            saveData();
+            initializeForm();
+        }
+
+        function removeParticipant(id) {
+            participants = participants.filter(p => p.id !== id);
+            saveData();
+            initializeForm();
+            updateDisplay();
+        }
+
+        function initializeForm() {
+            const form = document.getElementById('inputForm');
+            form.innerHTML = '';
+
+            participants.forEach(participant => {
+                const participantDiv = document.createElement('div');
+                participantDiv.className = 'participant-input';
+                participantDiv.innerHTML = `
+                    <h3>${participant.name}</h3>
+                    <div class="difficulty-inputs">
+                        <div class="difficulty-group">
+                            <label class="easy">Easy</label>
+                            <input type="number" min="0" value="0" 
+                                   onchange="updateStats()" 
+                                   data-participant="${participant.id}" 
+                                   data-difficulty="easy">
+                        </div>
+                        <div class="difficulty-group">
+                            <label class="medium">Medium</label>
+                            <input type="number" min="0" value="0" 
+                                   onchange="updateStats()" 
+                                   data-participant="${participant.id}" 
+                                   data-difficulty="medium">
+                        </div>
+                        <div class="difficulty-group">
+                            <label class="hard">Hard</label>
+                            <input type="number" min="0" value="0" 
+                                   onchange="updateStats()" 
+                                   data-participant="${participant.id}" 
+                                   data-difficulty="hard">
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" onclick="removeParticipant(${participant.id})" style="margin-top: 10px;">
+                        Remove
+                    </button>
+                `;
+                form.appendChild(participantDiv);
+            });
+
+            if (participants.length === 0) {
+                form.innerHTML = '<div class="no-data">No participants added yet. Click "Add Participant" to get started!</div>';
+            }
+        }
+
+        function updateStats() {
+            let totalProblems = 0;
+            let totalPoints = 0;
+            let easyTotal = 0;
+            let mediumTotal = 0;
+            let hardTotal = 0;
+
+            participants.forEach(participant => {
+                const easy = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="easy"]`).value) || 0;
+                const medium = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="medium"]`).value) || 0;
+                const hard = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="hard"]`).value) || 0;
+
+                const participantProblems = easy + medium + hard;
+                const participantPoints = easy + (medium * 2) + (hard * 3);
+
+                totalProblems += participantProblems;
+                totalPoints += participantPoints;
+                easyTotal += easy;
+                mediumTotal += medium;
+                hardTotal += hard;
+            });
+
+            document.getElementById('totalProblems').textContent = totalProblems;
+            document.getElementById('totalPoints').textContent = totalPoints;
+            document.getElementById('participantCount').textContent = participants.length;
+            document.getElementById('avgProblems').textContent = participants.length > 0 ? (totalProblems / participants.length).toFixed(1) : '0';
+
+            updateLeaderboard();
+        }
+
+        function updateLeaderboard() {
+            const leaderboardBody = document.getElementById('leaderboardBody');
+            
+            if (participants.length === 0) {
+                leaderboardBody.innerHTML = '<div class="no-data">No participants added yet</div>';
+                return;
+            }
+
+            const participantStats = participants.map(participant => {
+                const easy = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="easy"]`).value) || 0;
+                const medium = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="medium"]`).value) || 0;
+                const hard = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="hard"]`).value) || 0;
+                const points = easy + (medium * 2) + (hard * 3);
+
+                return {
+                    ...participant,
+                    easy,
+                    medium,
+                    hard,
+                    points
+                };
+            });
+
+            // Sort by points (descending)
+            participantStats.sort((a, b) => b.points - a.points);
+
+            leaderboardBody.innerHTML = participantStats.map((participant, index) => {
+                const rankClass = index < 3 ? `rank-${index + 1}` : '';
+                return `
+                    <div class="leaderboard-item">
+                        <div class="rank ${rankClass}">${index + 1}</div>
+                        <div class="participant-name">${participant.name}</div>
+                        <div class="easy">${participant.easy}</div>
+                        <div class="medium">${participant.medium}</div>
+                        <div class="hard">${participant.hard}</div>
+                        <div class="points">${participant.points}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function submitWeek() {
+            if (participants.length === 0) {
+                alert('Please add at least one participant first!');
+                return;
+            }
+
+            const weekData = {
+                week: currentWeek,
+                date: new Date().toISOString(),
+                participants: participants.map(participant => {
+                    const easy = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="easy"]`).value) || 0;
+                    const medium = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="medium"]`).value) || 0;
+                    const hard = parseInt(document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="hard"]`).value) || 0;
+                    const points = easy + (medium * 2) + (hard * 3);
+
+                    return {
+                        id: participant.id,
+                        name: participant.name,
+                        easy,
+                        medium,
+                        hard,
+                        points
+                    };
+                })
+            };
+
+            weeklyData[currentWeek] = weekData;
+            saveData();
+            updateWeekSelector();
+            
+            // Clear current inputs
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.value = '0';
+            });
+            updateStats();
+            
+            alert(`Week ${currentWeek} data saved successfully!`);
+        }
+
+        function loadHistoricalWeek() {
+            const week = document.getElementById('weekSelector').value;
+            const historicalData = document.getElementById('historicalData');
+
+            if (!week || !weeklyData[week]) {
+                historicalData.innerHTML = '<div class="no-data">No data available for this week</div>';
+                return;
+            }
+
+            const data = weeklyData[week];
+            const totalProblems = data.participants.reduce((sum, p) => sum + p.easy + p.medium + p.hard, 0);
+            const totalPoints = data.participants.reduce((sum, p) => sum + p.points, 0);
+            const easyTotal = data.participants.reduce((sum, p) => sum + p.easy, 0);
+            const mediumTotal = data.participants.reduce((sum, p) => sum + p.medium, 0);
+            const hardTotal = data.participants.reduce((sum, p) => sum + p.hard, 0);
+
+            // Sort participants by points
+            const sortedParticipants = [...data.participants].sort((a, b) => b.points - a.points);
+
+            historicalData.innerHTML = `
+                <div class="total-stats">
+                    <div class="total-stat">
+                        <div class="total-stat-number">${totalProblems}</div>
+                        <div class="total-stat-label">Total Problems</div>
+                    </div>
+                    <div class="total-stat">
+                        <div class="total-stat-number">${totalPoints}</div>
+                        <div class="total-stat-label">Total Points</div>
+                    </div>
+                    <div class="total-stat">
+                        <div class="total-stat-number">${easyTotal}</div>
+                        <div class="total-stat-label">Easy Problems</div>
+                    </div>
+                    <div class="total-stat">
+                        <div class="total-stat-number">${mediumTotal}</div>
+                        <div class="total-stat-label">Medium Problems</div>
+                    </div>
+                    <div class="total-stat">
+                        <div class="total-stat-number">${hardTotal}</div>
+                        <div class="total-stat-label">Hard Problems</div>
+                    </div>
+                </div>
+                <div class="leaderboard">
+                    <div class="leaderboard-header">
+                        <div class="leaderboard-item">
+                            <div>Rank</div>
+                            <div>Name</div>
+                            <div>Easy</div>
+                            <div>Medium</div>
+                            <div>Hard</div>
+                            <div>Points</div>
+                        </div>
+                    </div>
+                    ${sortedParticipants.map((participant, index) => {
+                        const rankClass = index < 3 ? `rank-${index + 1}` : '';
+                        return `
+                            <div class="leaderboard-item">
+                                <div class="rank ${rankClass}">${index + 1}</div>
+                                <div class="participant-name">${participant.name}</div>
+                                <div class="easy">${participant.easy}</div>
+                                <div class="medium">${participant.medium}</div>
+                                <div class="hard">${participant.hard}</div>
+                                <div class="points">${participant.points}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function updateWeekSelector() {
+            const selector = document.getElementById('weekSelector');
+            const currentValue = selector.value;
+            
+            selector.innerHTML = '<option value="">Select a week...</option>';
+            
+            Object.keys(weeklyData).sort((a, b) => parseInt(b) - parseInt(a)).forEach(week => {
+                const option = document.createElement('option');
+                option.value = week;
+                option.textContent = `Week ${week}`;
+                selector.appendChild(option);
+            });
+            
+            selector.value = currentValue;
+        }
+
+        function updateDisplay() {
+            updateStats();
+            updateWeekSelector();
+        }
+
+        function saveData() {
+            localStorage.setItem('leetcodeCompetition_participants', JSON.stringify(participants));
+            localStorage.setItem('leetcodeCompetition_weeklyData', JSON.stringify(weeklyData));
+        }
+
+        function loadData() {
+            const savedParticipants = localStorage.getItem('leetcodeCompetition_participants');
+            const savedWeeklyData = localStorage.getItem('leetcodeCompetition_weeklyData');
+            
+            if (savedParticipants) {
+                participants = JSON.parse(savedParticipants);
+            }
+            
+            if (savedWeeklyData) {
+                weeklyData = JSON.parse(savedWeeklyData);
+            }
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+                participants = [];
+                weeklyData = {};
+                localStorage.removeItem('leetcodeCompetition_participants');
+                localStorage.removeItem('leetcodeCompetition_weeklyData');
+                initializeForm();
+                updateDisplay();
+            }
+        }
+
+        function exportData() {
+            const exportData = {
+                participants: participants,
+                weeklyData: weeklyData,
+                lastUpdated: new Date().toISOString(),
+                version: "1.0"
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `leetcode-competition-data-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            alert('Data exported successfully! Save this file to GitHub to share across browsers.');
+        }
+
+        function importData() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Validate the imported data structure
+                    if (!importedData.participants || !importedData.weeklyData) {
+                        throw new Error('Invalid data format');
+                    }
+                    
+                    // Confirm import
+                    if (confirm(`Import data from ${importedData.lastUpdated || 'unknown date'}? This will replace current data.`)) {
+                        participants = importedData.participants;
+                        weeklyData = importedData.weeklyData;
+                        
+                        // Save to localStorage
+                        saveData();
+                        
+                        // Update the display
+                        initializeForm();
+                        updateDisplay();
+                        
+                        alert('Data imported successfully!');
+                    }
+                } catch (error) {
+                    alert('Error importing data: ' + error.message);
+                }
+                
+                // Clear the file input
+                event.target.value = '';
+            };
+            
+            reader.readAsText(file);
+        }
+
+        // Add initial participant if none exist
+        if (participants.length === 0) {
+            addParticipant();
+        }
+    </script>
+</body>
+</html>
