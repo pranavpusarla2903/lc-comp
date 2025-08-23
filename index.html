@@ -444,7 +444,6 @@
         document.addEventListener('DOMContentLoaded', async function() {
             // loadData();
             const dataLoadedFromJson = await loadFromJsonFile();
-            console.log(`dataLoadedFromJson: ${dataLoadedFromJson}`);
             
             // Initialize form and update display
             initializeForm();
@@ -767,7 +766,7 @@
                     const jsonData = await response.json();
                     
                     // Validate the JSON structure
-                    if (jsonData.participants && jsonData.weeklyData) {
+                    if (jsonData.participants) {
                         // Only load if we don't have local data or if JSON data is newer
                         const localLastUpdated = localStorage.getItem('leetcodeCompetition_lastUpdated');
                         const jsonLastUpdated = jsonData.lastUpdated;
