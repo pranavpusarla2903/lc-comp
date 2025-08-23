@@ -444,6 +444,7 @@
         document.addEventListener('DOMContentLoaded', async function() {
             // loadData();
             const dataLoadedFromJson = await loadFromJsonFile();
+            console.log(`dataLoadedFromJson: ${dataLoadedFromJson}`);
             
             // Initialize form and update display
             initializeForm();
