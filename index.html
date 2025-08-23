@@ -441,11 +441,18 @@
         let currentWeek = getCurrentWeek();
 
         // Load data from localStorage and JSON file on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             loadData();
-            loadFromJsonFile();
+            const dataLoadedFromJson = await loadFromJsonFile();
+            
+            // Initialize form and update display
             initializeForm();
             updateDisplay();
+            
+            // If data was loaded from JSON, update the current week inputs with the latest data
+            if (dataLoadedFromJson) {
+                updateCurrentWeekInputs();
+            }
         });
 
         function getCurrentWeek() {
@@ -751,7 +758,7 @@
             }
         }
 
-        async function loadFromJsonFile() {
+                async function loadFromJsonFile() {
             try {
                 const response = await fetch('leetcode-competition-data.json');
                 if (response.ok) {
@@ -773,6 +780,8 @@
                             
                             console.log('Data loaded from leetcode-competition-data.json');
                             showNotification('📥 Data loaded from GitHub!');
+                            
+                            return true; // Indicate that data was loaded
                         }
                     }
                 }
@@ -780,6 +789,7 @@
                 // File doesn't exist or can't be loaded - this is normal
                 console.log('No leetcode-competition-data.json file found or error loading it');
             }
+            return false; // Indicate that no new data was loaded
         }
 
         function clearData() {
@@ -804,6 +814,28 @@
             setTimeout(() => {
                 notification.remove();
             }, 3000);
+        }
+
+        function updateCurrentWeekInputs() {
+            // Get the latest week's data to populate current inputs
+            const weekKeys = Object.keys(weeklyData).sort((a, b) => parseInt(b) - parseInt(a));
+            if (weekKeys.length > 0) {
+                const latestWeek = weeklyData[weekKeys[0]];
+                
+                // Populate the input fields with the latest week's data
+                latestWeek.participants.forEach(participant => {
+                    const easyInput = document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="easy"]`);
+                    const mediumInput = document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="medium"]`);
+                    const hardInput = document.querySelector(`input[data-participant="${participant.id}"][data-difficulty="hard"]`);
+                    
+                    if (easyInput) easyInput.value = participant.easy || 0;
+                    if (mediumInput) mediumInput.value = participant.medium || 0;
+                    if (hardInput) hardInput.value = participant.hard || 0;
+                });
+                
+                // Update stats and leaderboard
+                updateStats();
+            }
         }
 
         function exportData() {
