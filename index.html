@@ -474,9 +474,9 @@
         let weeklyData = {};
         let currentWeek = getCurrentWeek();
 
-        // Load data from localStorage and JSON file on page load
+        // Load data from JSON file on page load
         document.addEventListener('DOMContentLoaded', async function() {
-            // loadData();
+            clearData();
             const dataLoadedFromJson = await loadFromJsonFile();
             
             // Initialize form and update display
@@ -493,9 +493,7 @@
             const now = new Date();
             const startOfYear = new Date(now.getFullYear(), 0, 1);
             const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
-            // Adjust for Monday as first day of week (0=Sunday, 1=Monday, etc.)
-            const mondayAdjustment = startOfYear.getDay() === 0 ? 6 : startOfYear.getDay() - 1;
-            return Math.ceil((days + mondayAdjustment + 1) / 7);
+            return Math.ceil((days + startOfYear.getDay() + 1) / 7);
         }
 
         function addParticipant() {
