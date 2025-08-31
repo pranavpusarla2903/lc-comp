@@ -13,7 +13,38 @@
       "name": "Siakham"
     }
   ],
-  "weeklyData": {},
-  "lastUpdated": "2025-08-23T17:49:33.055Z",
+  "weeklyData": {
+    "35": {
+      "week": 35,
+      "date": "2025-08-31T14:54:04.289Z",
+      "participants": [
+        {
+          "id": 1755971341077,
+          "name": "Pranav",
+          "easy": 1,
+          "medium": 1,
+          "hard": 4,
+          "points": 15
+        },
+        {
+          "id": 1755971346905,
+          "name": "Addy",
+          "easy": 3,
+          "medium": 8,
+          "hard": 2,
+          "points": 25
+        },
+        {
+          "id": 1755971351266,
+          "name": "Siakham",
+          "easy": 0,
+          "medium": 0,
+          "hard": 0,
+          "points": 0
+        }
+      ]
+    }
+  },
+  "lastUpdated": "2025-08-31T14:54:15.734Z",
   "version": "1.0"
 }
