@@ -476,7 +476,6 @@
 
         // Load data from JSON file on page load
         document.addEventListener('DOMContentLoaded', async function() {
-            clearData();
             const dataLoadedFromJson = await loadFromJsonFile();
             
             // Initialize form and update display
@@ -775,25 +774,6 @@
             updateTotalLeaderboard();
         }
 
-        function saveData() {
-            localStorage.setItem('leetcodeCompetition_participants', JSON.stringify(participants));
-            localStorage.setItem('leetcodeCompetition_weeklyData', JSON.stringify(weeklyData));
-        }
-
-        function loadData() {
-            console.log(`Loading data from localStorage...${localStorage}`);
-            const savedParticipants = localStorage.getItem('leetcodeCompetition_participants');
-            const savedWeeklyData = localStorage.getItem('leetcodeCompetition_weeklyData');
-            
-            if (savedParticipants) {
-                participants = JSON.parse(savedParticipants);
-            }
-            
-            if (savedWeeklyData) {
-                weeklyData = JSON.parse(savedWeeklyData);
-            }
-        }
-
         async function loadFromJsonFile() {
             console.log("Loading data from JSON file...");
             try {
@@ -806,8 +786,6 @@
                     participants = jsonData.participants;
                     weeklyData = jsonData.weeklyData;
                     
-                    // Save to localStorage
-                    saveData();
                     console.log('Data loaded from leetcode-competition-data.json');
                     showNotification('📥 Data loaded from GitHub!');
                     return true; // Indicate that data was loaded   
@@ -817,18 +795,6 @@
                 console.log('No leetcode-competition-data.json file found or error loading it');
             }
             return false; // Indicate that no new data was loaded
-        }
-
-        function clearData() {
-            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
-                participants = [];
-                weeklyData = {};
-                localStorage.removeItem('leetcodeCompetition_participants');
-                localStorage.removeItem('leetcodeCompetition_weeklyData');
-                localStorage.removeItem('leetcodeCompetition_lastUpdated');
-                initializeForm();
-                updateDisplay();
-            }
         }
 
         function showNotification(message) {
@@ -952,9 +918,6 @@
                     if (confirm(`Import data from ${importedData.lastUpdated || 'unknown date'}? This will replace current data.`)) {
                         participants = importedData.participants;
                         weeklyData = importedData.weeklyData;
-                        
-                        // Save to localStorage
-                        saveData();
                         
                         // Update the display
                         initializeForm();
