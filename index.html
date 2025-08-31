@@ -381,12 +381,9 @@
                 <div style="text-align: center;">
                     <button class="btn" onclick="addParticipant()">➕ Add Participant</button>
                     <button class="btn" onclick="submitWeek()">💾 Submit Week</button>
-                    <button class="btn btn-danger" onclick="clearData()">🗑️ Clear All Data</button>
                 </div>
                 <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef;">
-                    <button class="btn" onclick="exportData()">📤 Export Data</button>
-                    <button class="btn" onclick="importData()">📥 Import Data</button>
-                    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
+                                <button class="btn" onclick="exportData()">📤 Export Data</button>
                 </div>
             </div>
 
@@ -501,13 +498,12 @@
                 id: participantId,
                 name: `Participant ${participants.length + 1}`
             });
-            saveData();
+            updateDisplay();
             initializeForm();
         }
 
         function removeParticipant(id) {
             participants = participants.filter(p => p.id !== id);
-            saveData();
             initializeForm();
             updateDisplay();
         }
@@ -516,7 +512,6 @@
             const participant = participants.find(p => p.id === id);
             if (participant) {
                 participant.name = newName.trim() || `Participant ${participant.id}`;
-                saveData();
                 updateDisplay();
             }
         }
@@ -670,7 +665,7 @@
             };
 
             weeklyData[currentWeek] = weekData;
-            saveData();
+            updateDisplay();
             updateWeekSelector();
             
             // Clear current inputs
@@ -680,6 +675,9 @@
             updateStats();
             
             alert(`Week ${currentWeek} data saved successfully!`);
+            
+            // Automatically export data after saving week
+            exportData();
         }
 
         function loadHistoricalWeek() {
@@ -896,45 +894,7 @@
             alert('Data exported successfully! Save this file to GitHub to share across browsers.');
         }
 
-        function importData() {
-            document.getElementById('fileInput').click();
-        }
 
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    // Validate the imported data structure
-                    if (!importedData.participants || !importedData.weeklyData) {
-                        throw new Error('Invalid data format');
-                    }
-                    
-                    // Confirm import
-                    if (confirm(`Import data from ${importedData.lastUpdated || 'unknown date'}? This will replace current data.`)) {
-                        participants = importedData.participants;
-                        weeklyData = importedData.weeklyData;
-                        
-                        // Update the display
-                        initializeForm();
-                        updateDisplay();
-                        
-                        alert('Data imported successfully!');
-                    }
-                } catch (error) {
-                    alert('Error importing data: ' + error.message);
-                }
-                
-                // Clear the file input
-                event.target.value = '';
-            };
-            
-            reader.readAsText(file);
-        }
 
         // Add initial participant if none exist
         if (participants.length === 0) {
