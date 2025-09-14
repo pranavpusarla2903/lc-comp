@@ -44,8 +44,8 @@
         }
       ]
     },
-    "37": {
-      "week": 37,
+    "36": {
+      "week": 36,
       "date": "2025-09-07T20:01:40.587Z",
       "participants": [
         {
@@ -73,8 +73,38 @@
           "points": 97
         }
       ]
+    },
+    "37": {
+      "week": 37,
+      "date": "2025-09-14T12:36:00.587Z",
+      "participants": [
+        {
+          "id": 1755971341077,
+          "name": "Pranav",
+          "easy": 0,
+          "medium": 10,
+          "hard": 1,
+          "points": 21
+        },
+        {
+          "id": 1755971346905,
+          "name": "Addy",
+          "easy": 0,
+          "medium": 8,
+          "hard": 1,
+          "points": 17
+        },
+        {
+          "id": 1755971351266,
+          "name": "Siakham",
+          "easy": 1,
+          "medium": 14,
+          "hard": 3,
+          "points": 38
+        }
+      ]
     }
   },
-  "lastUpdated": "2025-09-07T20:01:42.117Z",
+  "lastUpdated": "2025-09-14T12:36:00.587Z",
   "version": "1.0"
 }
