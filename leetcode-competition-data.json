@@ -103,8 +103,38 @@
           "points": 38
         }
       ]
+    },
+    "38": {
+      "week": 38,
+      "date": "2025-09-21T12:36:00.587Z",
+      "participants": [
+        {
+          "id": 1755971341077,
+          "name": "Pranav",
+          "easy": 0,
+          "medium": 18,
+          "hard": 8,
+          "points": 60
+        },
+        {
+          "id": 1755971346905,
+          "name": "Addy",
+          "easy": 0,
+          "medium": 5,
+          "hard": 0,
+          "points": 15
+        },
+        {
+          "id": 1755971351266,
+          "name": "Siakham",
+          "easy": 2,
+          "medium": 5,
+          "hard": 0,
+          "points": 17
+        }
+      ]
     }
   },
-  "lastUpdated": "2025-09-14T12:36:00.587Z",
+  "lastUpdated": "2025-09-21T12:36:00.587Z",
   "version": "1.0"
 }
